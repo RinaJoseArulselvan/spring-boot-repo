@@ -23,13 +23,15 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Constants updateProduct(Long id , ProductRequest productRequest)  {
-        Product isProductExists = productRepository.findById(id).orElse(null);
-        if(isProductExists == null){
+        Product product = productRepository.findById(id).orElse(null);
+        if(product == null){
             return Constants.UPDATION_FAILED;
         }else {
-            Product product = Product.build(0L,productRequest.getName(),
-                    productRequest.getDescription(),productRequest.getPrice(),productRequest.getQuantity());
-             productRepository.save(product);
+            product.setName(productRequest.getName());
+            product.setDescription(productRequest.getDescription());
+            product.setPrice(productRequest.getPrice());
+            product.setQuantity(productRequest.getQuantity());
+            productRepository.save(product);
              return Constants.UPDATED;
         }
     }
